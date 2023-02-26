@@ -30,7 +30,7 @@ MultiSearchX currently supports the following search engines:
 - Bing
 - Yahoo
 - Neeva AI
-- Bing AI
+- Brave
 - YouChat / You.com
 - Phind
 
