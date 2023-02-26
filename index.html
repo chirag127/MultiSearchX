@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Multi-Search Website</title>
+	<style>
+		body {
+			font-family: sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 50px;
+		}
+
+		label {
+			margin-top: 20px;
+			font-size: 18px;
+		}
+
+		textarea {
+			font-size: 16px;
+			padding: 5px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 1px 1px 2px #ccc;
+			width: 100%;
+			max-width: 500px;
+			height: 200px;
+			resize: none;
+		}
+
+		select {
+			font-size: 16px;
+			padding: 5px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 1px 1px 2px #ccc;
+			width: 100%;
+			max-width: 500px;
+		}
+
+		button {
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 5px;
+			padding: 10px;
+			font-size: 16px;
+			margin-top: 20px;
+			cursor: pointer;
+		}
+
+		button:hover {
+			background-color: #3E8E41;
+		}
+
+	</style>
+	<script>
+		function search() {
+			var searchTerms = document.getElementById("search-terms").value.trim().split('\n');
+			var appendText = document.getElementById("append-text").value;
+			var searchEngine = document.getElementById("search-engine").value;
+
+			for(var i = 0; i < searchTerms.length; i++) {
+				var searchTerm = searchTerms[i].trim();
+
+				if(searchTerm.length > 0) {
+					var searchUrl = "";
+
+					switch(searchEngine) {
+						case "google":
+							searchUrl = "https://www.google.com/search?q=";
+							break;
+						case "bing":
+							searchUrl = "https://www.bing.com/search?q=";
+							break;
+						case "yahoo":
+							searchUrl = "https://search.yahoo.com/search?p=";
+							break;
+						case "neeve":
+							searchUrl = "https://neeva.com/search?q=";
+							break;
+						case "bing-ai":
+							searchUrl = "https://www.bing.com/search?q=" + encodeURIComponent(searchTerm + " " + appendText) + "&FORM=ANNTH1&srchpg=no&ensearch=1";
+							break;
+						case "youchat":
+							searchUrl = "https://you.com/search?q=" + encodeURIComponent(searchTerm + " " + appendText) + "&fromSearchBar=true&tbm=youchat";
+							break;
+						case "phind":
+							searchUrl = "https://phind.com/search?q=" + encodeURIComponent(searchTerm + " " + appendText);
+							break;
+						default:
+							searchUrl = "https://www.google.com/search?q=";
+							break;
+					}
+
+					searchUrl += encodeURIComponent(searchTerm + " " + appendText);
+
+					window.open(searchUrl, "_blank");
+				}
+			}
+		}
+	</script>
+</head>
+<body>
+	<h1>Multi-Search Website</h1>
+  <form>
+	<label for="search-terms">Enter your search terms:</label>
+	<textarea id="search-terms"></textarea>
+
+	<label for="append-text">Enter text to append to each search term (optional):</label>
+	<input type="text" id="append-text">
+
+	<label for="search-engine">Select search engine:</label>
+	<select id="search-engine">
+		<option value="google">Google</option>
+		<option value="bing">Bing</option>
+		<option value="yahoo">Yahoo</option>
+		<option value="neeve">Neeva AI</option>
+		<option value="bing-ai">Bing AI</option>
+		<option value="youchat">YouChat / You.com</option>
+		<option value="phind">Phind</option>
+	</select>
+
+	<button type="button" onclick="search()">Search</button>
+</form>
+</body>
+</html>
