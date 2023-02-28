@@ -51,58 +51,86 @@
 		function search() {
 			var searchTerms = document.getElementById("search-terms").value.trim().split('\n');
 			var appendText = document.getElementById("append-text").value;
+			var prependText = document.getElementById("prepend-text").value;
 			var searchEngines = document.querySelectorAll('input[name="search-engine"]:checked');
-			var customSearchEngines = document.querySelectorAll('input[name="custom-search-engine"]');
+			var customSearchEngines = document.querySelectorAll('.custom-search-engine-field');
 			var delay = parseInt(document.getElementById("delay").value);
-			var openInNewTab = document.getElementById("open-in-new-tab").checked;
+			var numberOfSearches = parseInt(document.getElementById("number-of-searches").value);
+			var numCustomSearchEngines = parseInt(document.getElementById("num-custom-search-engines").value);
 
 			for (var i = 0; i < searchTerms.length; i++) {
-				var searchTerm = searchTerms[i].trim();
 
-				if (searchTerm.length > 0) {
-					for (var j = 0; j < searchEngines.length; j++) {
-						var searchEngine = searchEngines[j].value;
-						var searchUrl = "";
+				total_search_engines = searchEngines.length + numCustomSearchEngines;
 
-						switch (searchEngine) {
-							case "google":
-								searchUrl = "https://www.google.com/search?q=";
-								break;
-							case "bing":
-								searchUrl = "https://www.bing.com/search?q=";
-								break;
-							case "neeva":
-								searchUrl = "https://neeva.com/search?q=";
-								break;
-							case "brave":
-								searchUrl = "https://search.brave.com/search?q=" + encodeURIComponent(searchTerm + " " + appendText) + "&FORM=ANNTH1&srchpg=no&ensearch=1";
-								break;
-							case "youchat":
-								searchUrl = "https://you.com/search?q=" + encodeURIComponent(searchTerm + " " + appendText) + "&fromSearchBar=true&tbm=youchat";
-								break;
-							case "phind":
-								searchUrl = "https://phind.com/search?q=" + encodeURIComponent(searchTerm + " " + appendText);
-								break;
-							case "custom":
-								searchUrl = customSearchEngines[j].value.trim() + encodeURIComponent(searchTerm + " " + appendText);
-								break;
-							default:
-								searchUrl = "https://www.google.com/search?q=";
-								break;
+
+				if (searchTerms[i].trim().length > 0) {
+					for (var j = 0; j < total_search_engines; j++) {
+
+						if (j < searchEngines.length) {
+							var searchEngine = searchEngines[j].value;
+						} else {
+							var searchEngine = "custom";
 						}
 
-						searchUrl += encodeURIComponent(searchTerm + " " + appendText);
 
-						// The following line was changed to use the searchUrl variable instead of the searchUrl variable from the outer scope.
-						setTimeout(function (searchUrl) {
-							if (openInNewTab) {
-								window.open(searchUrl, "_blank");
+
+						for (var k = 0; k <= numberOfSearches; k++) {
+
+							if (k == 0) {
+								searchTerm = prependText + " " + searchTerms[i].trim() + " " + appendText;
 							} else {
-								window.open(searchUrl, "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=500,left=500,width=400,height=400");
+								searchTerm = prependText + " " + searchTerms[i].trim() + " " + k + " " + appendText;
 							}
-						}, delay * j, searchUrl);
+
+							if (searchEngine == "google") {
+								searchUrl = "https://www.google.com/search?q=" + searchTerm;
+							} else if (searchEngine == "bing") {
+								searchUrl = "https://www.bing.com/search?q=" + searchTerm;
+							} else if (searchEngine == "neeva") {
+								searchUrl = "https://neeva.com/search?q=" + searchTerm;
+							} else if (searchEngine == "brave") {
+								searchUrl = "https://search.brave.com/search?q=" + searchTerm + "&FORM=ANNTH1&srchpg=no&ensearch=1";
+							} else if (searchEngine == "youchat") {
+								searchUrl = "https://you.com/search?q=" + searchTerm + "&fromSearchBar=true&tbm=youchat";
+							} else if (searchEngine == "phind") {
+								searchUrl = "https://phind.com/search?q=" + searchTerm;
+							} else if (searchEngine == "custom") {
+								searchUrl = customSearchEngines[j].value.trim() + searchTerm;
+							} else {
+								searchUrl = "https://www.google.com/search?q=" + searchTerm;
+							}
+
+							setTimeout(function (searchUrl) {
+
+								window.open(searchUrl, "_blank");
+
+							}, delay, searchUrl);
+						}
 					}
 				}
+			}
+
+
+		}
+		function generateCustomSearchEngineFields() {
+			var count = parseInt(document.getElementById("num-custom-search-engines").value);
+			var customSearchEnginesDiv = document.getElementById("custom-search-engines");
+			customSearchEnginesDiv.innerHTML = "";
+
+			for (var i = 1; i <= count; i++) {
+				var inputField = document.createElement("input");
+				inputField.type = "text";
+				inputField.className = "custom-search-engine-field";
+				inputField.name = "custom-search-engine-" + i;
+				inputField.placeholder = "Custom search engine " + i;
+				customSearchEnginesDiv.appendChild(inputField);
+			}
+		}
+
+		function toggle(source) {
+			checkboxes = document.getElementsByName('search-engine');
+			for (var i = 0, n = checkboxes.length; i < n; i++) {
+				checkboxes[i].checked = source.checked;
 			}
 		}
 	</script>
@@ -112,12 +140,18 @@
 	<h1>Multi-Search Website</h1>
 	<form>
 		<label for="search-terms">Enter your search terms:</label>
-		<textarea id="search-terms"></textarea>
+		<textarea id="search-terms" rows="10"> </textarea>
 
 		<label for="append-text">Enter text to append to each search term (optional):</label>
 		<input type="text" id="append-text">
 
+		<label for="prepend-text">Enter text to prepend to each search term (optional):</label>
+		<input type="text" id="prepend-text">
+
 		<label>Select search engines:</label><br>
+
+		<label for="Select All">Select All</label>
+		<input type="checkbox" name="search-engine" value="Select All" id="Select All" onclick="toggle(this);"><br>
 		<label for="google">Google</label>
 		<input type="checkbox" name="search-engine" value="google" id="google" checked><br>
 		<label for="bing">Bing</label>
@@ -131,12 +165,20 @@
 		<input type="checkbox" name="search-engine" value="youchat" id="youchat"><br>
 		<label for="phind">Phind</label>
 		<input type="checkbox" name="search-engine" value="phind" id="phind"><br>
-		<label for="custom-search-engine">Custom search engine (optional):</label>
-		<input type="text" name="custom-search-engine" id="custom-search-engine"><br>
+
+
+		<label for="custom">Custom</label>
+		<label for="num-custom-search-engines">Number of custom search engines:</label>
+		<input type="number" id="num-custom-search-engines" value="0" onchange="generateCustomSearchEngineFields()"><br>
+		<div id="custom-search-engines">
+		</div>
+
+
+
 		<label for="delay">Delay between searches (in milliseconds):</label>
-		<input type="number" id="delay" value="500"><br>
-		<label for="open-in-new-tab">Open in new tab?</label>
-		<input type="checkbox" id="open-in-new-tab" checked><br>
+		<input type="number" id="delay" value="0"><br>
+		<label for="number-of-searches">Number of searches (optional):</label>
+		<input type="number" id="number-of-searches" value="0"><br>
 		<button type="button" onclick="search()">Search</button>
 
 	</form>
