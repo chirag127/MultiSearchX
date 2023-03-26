@@ -2,186 +2,192 @@
 <html>
 
 <head>
-	<title>Multi-Search Website</title>
-	<style>
-		h1 {
-			font-size: 32px;
-			font-weight: bold;
-			text-align: center;
-			margin-bottom: 24px;
-		}
+    <title>Multi-Search Website</title>
+    <style>
+        h1 {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 24px;
+        }
 
-		label {
-			display: block;
-			margin-bottom: 8px;
-			font-weight: bold;
-		}
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-		input[type="checkbox"] {
-			margin-right: 8px;
-		}
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
 
-		textarea,
-		input[type="text"],
-		input[type="number"] {
-			width: 100%;
-			padding: 8px;
-			border-radius: 4px;
-			border: 1px solid #ccc;
-			margin-bottom: 16px;
-		}
+        textarea,
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 16px;
+        }
 
-		button {
-			display: block;
-			margin: 16px auto;
-			padding: 8px 16px;
-			border-radius: 4px;
-			border: none;
-			background-color: #007bff;
-			color: #fff;
-			font-weight: bold;
-			cursor: pointer;
-		}
+        button {
+            display: block;
+            margin: 16px auto;
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-		button:hover {
-			background-color: #0069d9;
-		}
-	</style>
-	<script>
-		function search() {
-			var searchTerms = document.getElementById("search-terms").value.trim().split('\n');
-			var appendText = document.getElementById("append-text").value;
-			var prependText = document.getElementById("prepend-text").value;
-			var searchEngines = document.querySelectorAll('input[name="search-engine"]:checked');
-			var customSearchEngines = document.querySelectorAll('.custom-search-engine-field');
-			var delay = parseInt(document.getElementById("delay").value);
-			var numberOfSearches = parseInt(document.getElementById("number-of-searches").value);
-			var numCustomSearchEngines = parseInt(document.getElementById("num-custom-search-engines").value);
+        button:hover {
+            background-color: #0069d9;
+        }
+    </style>
+    <script>
+        function search() {
+            var searchTerms = document.getElementById("search-terms").value.trim().split('\n');
+            var appendText = document.getElementById("append-text").value;
+            var prependText = document.getElementById("prepend-text").value;
+            var searchEngines = document.querySelectorAll('input[name="search-engine"]:checked');
+            var customSearchEngines = document.querySelectorAll('.custom-search-engine-field');
+            var delay = parseInt(document.getElementById("delay").value);
+            var numberOfSearches = parseInt(document.getElementById("number-of-searches").value);
+            var numCustomSearchEngines = parseInt(document.getElementById("num-custom-search-engines").value);
 
-			for (var i = 0; i < searchTerms.length; i++) {
+            for (var i = 0; i < searchTerms.length; i++) {
 
-				total_search_engines = searchEngines.length + numCustomSearchEngines;
-
-
-				if (searchTerms[i].trim().length > 0) {
-					for (var j = 0; j < total_search_engines; j++) {
-
-						if (j < searchEngines.length) {
-							var searchEngine = searchEngines[j].value;
-						} else {
-							var searchEngine = "custom";
-						}
+                total_search_engines = searchEngines.length + numCustomSearchEngines;
 
 
+                if (searchTerms[i].trim().length > 0) {
+                    for (var j = 0; j < total_search_engines; j++) {
 
-						for (var k = 0; k <= numberOfSearches; k++) {
-
-							if (k == 0) {
-								searchTerm = prependText + " " + searchTerms[i].trim() + " " + appendText;
-							} else {
-								searchTerm = prependText + " " + searchTerms[i].trim() + " " + k + " " + appendText;
-							}
-
-							if (searchEngine == "google") {
-								searchUrl = "https://www.google.com/search?q=" + searchTerm;
-							} else if (searchEngine == "bing") {
-								searchUrl = "https://www.bing.com/search?q=" + searchTerm;
-							} else if (searchEngine == "neeva") {
-								searchUrl = "https://neeva.com/search?q=" + searchTerm;
-							} else if (searchEngine == "brave") {
-								searchUrl = "https://search.brave.com/search?q=" + searchTerm + "&FORM=ANNTH1&srchpg=no&ensearch=1";
-							} else if (searchEngine == "youchat") {
-								searchUrl = "https://you.com/search?q=" + searchTerm + "&fromSearchBar=true&tbm=youchat";
-							} else if (searchEngine == "phind") {
-								searchUrl = "https://phind.com/search?q=" + searchTerm;
-							} else if (searchEngine == "custom") {
-								searchUrl = customSearchEngines[j].value.trim() + searchTerm;
-							} else {
-								searchUrl = "https://www.google.com/search?q=" + searchTerm;
-							}
-
-							setTimeout(function (searchUrl) {
-
-								window.open(searchUrl, "_blank");
-
-							}, delay, searchUrl);
-						}
-					}
-				}
-			}
+                        if (j < searchEngines.length) {
+                            var searchEngine = searchEngines[j].value;
+                        } else {
+                            var searchEngine = "custom";
+                        }
 
 
-		}
-		function generateCustomSearchEngineFields() {
-			var count = parseInt(document.getElementById("num-custom-search-engines").value);
-			var customSearchEnginesDiv = document.getElementById("custom-search-engines");
-			customSearchEnginesDiv.innerHTML = "";
 
-			for (var i = 1; i <= count; i++) {
-				var inputField = document.createElement("input");
-				inputField.type = "text";
-				inputField.className = "custom-search-engine-field";
-				inputField.name = "custom-search-engine-" + i;
-				inputField.placeholder = "Custom search engine " + i;
-				customSearchEnginesDiv.appendChild(inputField);
-			}
-		}
+                        for (var k = 0; k <= numberOfSearches; k++) {
 
-		function toggle(source) {
-			checkboxes = document.getElementsByName('search-engine');
-			for (var i = 0, n = checkboxes.length; i < n; i++) {
-				checkboxes[i].checked = source.checked;
-			}
-		}
-	</script>
+                            if (k == 0) {
+                                searchTerm = prependText + " " + searchTerms[i].trim() + " " + appendText;
+                            } else {
+                                searchTerm = prependText + " " + searchTerms[i].trim() + " " + k + " " + appendText;
+                            }
+
+                            if (searchEngine == "google") {
+                                if (document.getElementById("im-feeling-lucky").checked) {
+                                    searchUrl = "https://www.google.com/search?q=" + searchTerm + "&btnI=I%27m+Feeling+Lucky";
+                                } else {
+                                    searchUrl = "https://www.google.com/search?q=" + searchTerm;
+                                }
+                            } else if (searchEngine == "bing") {
+                                searchUrl = "https://www.bing.com/search?q=" + searchTerm;
+                            } else if (searchEngine == "neeva") {
+                                searchUrl = "https://neeva.com/search?q=" + searchTerm;
+                            } else if (searchEngine == "brave") {
+                                searchUrl = "https://search.brave.com/search?q=" + searchTerm + "&FORM=ANNTH1&srchpg=no&ensearch=1";
+                            } else if (searchEngine == "youchat") {
+                                searchUrl = "https://you.com/search?q=" + searchTerm + "&fromSearchBar=true&tbm=youchat";
+                            } else if (searchEngine == "phind") {
+                                searchUrl = "https://phind.com/search?q=" + searchTerm;
+                            } else if (searchEngine == "custom") {
+                                searchUrl = customSearchEngines[j].value.trim() + searchTerm;
+                            } else {
+                                searchUrl = "https://www.google.com/search?q=" + searchTerm;
+                            }
+
+                            setTimeout(function (searchUrl) {
+
+                                window.open(searchUrl, "_blank");
+
+                            }, delay, searchUrl);
+                        }
+                    }
+                }
+            }
+
+
+        }
+        function generateCustomSearchEngineFields() {
+            var count = parseInt(document.getElementById("num-custom-search-engines").value);
+            var customSearchEnginesDiv = document.getElementById("custom-search-engines");
+            customSearchEnginesDiv.innerHTML = "";
+
+            for (var i = 1; i <= count; i++) {
+                var inputField = document.createElement("input");
+                inputField.type = "text";
+                inputField.className = "custom-search-engine-field";
+                inputField.name = "custom-search-engine-" + i;
+                inputField.placeholder = "Custom search engine " + i;
+                customSearchEnginesDiv.appendChild(inputField);
+            }
+        }
+
+        function toggle(source) {
+            checkboxes = document.getElementsByName('search-engine');
+            for (var i = 0, n = checkboxes.length; i < n; i++) {
+                checkboxes[i].checked = source.checked;
+            }
+        }
+    </script>
 </head>
 
 <body>
-	<h1>Multi-Search Website</h1>
-	<form>
-		<label for="search-terms">Enter your search terms:</label>
-		<textarea id="search-terms" rows="10"> </textarea>
+    <h1>Multi-Search Website</h1>
+    <form>
+        <label for="search-terms">Enter your search terms:</label>
+        <textarea id="search-terms" rows="10"> </textarea>
 
-		<label for="append-text">Enter text to append to each search term (optional):</label>
-		<input type="text" id="append-text">
+        <label for="append-text">Enter text to append to each search term (optional):</label>
+        <input type="text" id="append-text">
 
-		<label for="prepend-text">Enter text to prepend to each search term (optional):</label>
-		<input type="text" id="prepend-text">
+        <label for="prepend-text">Enter text to prepend to each search term (optional):</label>
+        <input type="text" id="prepend-text">
+        <label for="im-feeling-lucky">I'm Feeling Lucky</label>
+        <input type="checkbox" name="im-feeling-lucky" value="im-feeling-lucky" id="im-feeling-lucky">
 
-		<label>Select search engines:</label><br>
+        <label>Select search engines:</label><br>
 
-		<label for="Select All">Select All</label>
-		<input type="checkbox" name="search-engine" value="Select All" id="Select All" onclick="toggle(this);"><br>
-		<label for="google">Google</label>
-		<input type="checkbox" name="search-engine" value="google" id="google" checked><br>
-		<label for="bing">Bing</label>
-		<input type="checkbox" name="search-engine" value="bing" id="bing"><br>
+        <label for="Select All">Select All</label>
+        <input type="checkbox" name="search-engine" value="Select All" id="Select All" onclick="toggle(this);"><br>
+        <label for="google">Google</label>
+        <input type="checkbox" name="search-engine" value="google" id="google" checked><br>
+        <label for="bing">Bing</label>
+        <input type="checkbox" name="search-engine" value="bing" id="bing"><br>
 
-		<label for="neeva">Neeva AI</label>
-		<input type="checkbox" name="search-engine" value="neeva" id="neeva"><br>
-		<label for="brave">Brave</label>
-		<input type="checkbox" name="search-engine" value="brave" id="brave"><br>
-		<label for="youchat">YouChat</label>
-		<input type="checkbox" name="search-engine" value="youchat" id="youchat"><br>
-		<label for="phind">Phind</label>
-		<input type="checkbox" name="search-engine" value="phind" id="phind"><br>
-
-
-		<label for="custom">Custom</label>
-		<label for="num-custom-search-engines">Number of custom search engines:</label>
-		<input type="number" id="num-custom-search-engines" value="0" onchange="generateCustomSearchEngineFields()"><br>
-		<div id="custom-search-engines">
-		</div>
+        <label for="neeva">Neeva AI</label>
+        <input type="checkbox" name="search-engine" value="neeva" id="neeva"><br>
+        <label for="brave">Brave</label>
+        <input type="checkbox" name="search-engine" value="brave" id="brave"><br>
+        <label for="youchat">YouChat</label>
+        <input type="checkbox" name="search-engine" value="youchat" id="youchat"><br>
+        <label for="phind">Phind</label>
+        <input type="checkbox" name="search-engine" value="phind" id="phind"><br>
 
 
+        <label for="custom">Custom</label>
+        <label for="num-custom-search-engines">Number of custom search engines:</label>
+        <input type="number" id="num-custom-search-engines" value="0" onchange="generateCustomSearchEngineFields()"><br>
+        <div id="custom-search-engines">
+        </div>
 
-		<label for="delay">Delay between searches (in milliseconds):</label>
-		<input type="number" id="delay" value="0"><br>
-		<label for="number-of-searches">Number of searches (optional):</label>
-		<input type="number" id="number-of-searches" value="0"><br>
-		<button type="button" onclick="search()">Search</button>
 
-	</form>
+
+        <label for="delay">Delay between searches (in milliseconds):</label>
+        <input type="number" id="delay" value="0"><br>
+        <label for="number-of-searches">Number of searches (optional):</label>
+        <input type="number" id="number-of-searches" value="0"><br>
+        <button type="button" onclick="search()">Search</button>
+
+    </form>
 </body>
 
 </html>
