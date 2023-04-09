@@ -26,10 +26,6 @@
             font-weight: bold;
         }
 
-        input[type="checkbox"] {
-            margin-right: 8px;
-        }
-
         textarea,
         input[type="text"],
         input[type="number"] {
@@ -37,7 +33,8 @@
             padding: 8px;
             border-radius: 4px;
             border: 1px solid #ccc;
-            margin-bottom: 16px;
+            /* margin-bottom: 16px; */
+            margin: auto;
         }
 
         button {
@@ -52,9 +49,31 @@
             cursor: pointer;
         }
 
+        /* fix for bug in code */
         button:hover {
             background-color: #0069d9;
+            color: #fff;
         }
+
+
+        .custom-search-engine-field {
+            width: 80%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-bottom: 16px;
+            text-align: center;
+            margin: auto;
+        }
+
+
+
+        form {
+            margin: auto;
+            width: 90%;
+            padding: 10px;
+        }
+
     </style>
     <script>
         function search() {
@@ -134,7 +153,23 @@
                 inputField.className = "custom-search-engine-field";
                 inputField.name = "custom-search-engine-" + i;
                 inputField.placeholder = "Custom search engine " + i;
+                inputField.list = "custom-search-engines-to-suggest_"  + i;
                 customSearchEnginesDiv.appendChild(inputField);
+
+                // add a datalist for the search engines that are supported
+                var datalist = document.createElement("datalist");
+                datalist.id = "custom-search-engines-to-suggest_" + i;
+
+                customSearchEnginesDiv.appendChild(datalist);
+
+
+                for (var i = 0; i < customSearchEnginesToSuggest.length; i++) {
+                    var option = document.createElement("option");
+                    option.value = customSearchEnginesToSuggest[i];
+                    option.text = customSearchEnginesToSuggest[i];
+                    document.getElementById("custom-search-engines-to-suggest_" + i).appendChild(option);
+                }
+
             }
         }
 
@@ -170,6 +205,41 @@
 
         }
 
+
+
+
+
+
+
+
+
+        customSearchEnginesToSuggest = ["https://youtube.com/search?q=",
+            "https://twitter.com/search?q=",
+            "https://duckduckgo.com/?q=",
+            "https://startpage.com/do/search?q=",
+            "https://search.brave.com/search?q=",
+            "https://www.ecosia.org/search?q=",
+            "https://www.qwant.com/?q=",
+            "https://www.yandex.com/search/?text=",
+            "https://www.naver.com/search.naver?query=",
+            "https://www.baidu.com/s?wd=",
+            "https://search.yahoo.com/search?p=",
+            "https://www.seznam.cz/?q=",
+            "https://www.ask.com/web?q=",
+            "https://www.aol.com/search/?q=",
+            "https://www.wolframalpha.com/input/?i=",
+            "https://www.google.com/search?q=",
+            "https://www.google.com/search?tbm=isch&q=",
+            "https://www.google.com/search?tbm=vid&q=",
+            "https://www.google.com/search?tbm=nws&q=",
+            "https://www.google.com/search?tbm=shop&q=",
+            "https://www.google.com/search?tbm=bks&q=",
+        ]
+
+        // Add custom search engines to the list of search engines to suggest
+
+
+
     </script>
 </head>
 
@@ -200,7 +270,7 @@
 
         <!-- // give choices to give for the checkboxes -->
 
-        
+
 
 
         <label for="bing">Bing</label>
