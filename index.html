@@ -2,6 +2,15 @@
 <html>
 
 <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Multi-Search Website">
+    <meta name="author" content="Multi-Search Website">
+
+
+
+
     <title>Multi-Search Website</title>
     <style>
         h1 {
@@ -100,8 +109,6 @@
                                 searchUrl = "https://phind.com/search?q=" + searchTerm;
                             } else if (searchEngine == "custom") {
                                 searchUrl = customSearchEngines[j].value.trim() + searchTerm;
-                            } else {
-                                searchUrl = "https://www.google.com/search?q=" + searchTerm;
                             }
 
                             setTimeout(function (searchUrl) {
@@ -137,6 +144,32 @@
                 checkboxes[i].checked = source.checked;
             }
         }
+
+
+        /*
+        make a function that select the bing and all 20 random terms to the search box
+        */
+
+        function selectBing() {
+
+            // select bing
+
+            document.getElementById("bing").checked = true;
+
+            document.getElementById("google").checked = false;
+
+            // add 20 random terms to the search box
+
+            search_terms_box = document.getElementById("search-terms");
+
+            search_terms_box.value = "how to learn python\nhow to learn javascript\nhow to learn java\nhow to learn c++\nhow to learn c#\nhow to learn php\nhow to learn ruby\nhow to learn swift\nhow to learn go\nhow to learn kotlin\nhow to learn rust\nhow to learn perl\nhow to learn scala\nhow to learn clojure\nhow to learn haskell\nhow to learn lua\nhow to learn erlang\nhow to learn elixir\nhow to learn prolog\nhow to learn lisp";
+
+            // press the search button
+
+            search();
+
+        }
+
     </script>
 </head>
 
@@ -158,8 +191,18 @@
 
         <label for="Select All">Select All</label>
         <input type="checkbox" name="search-engine" value="Select All" id="Select All" onclick="toggle(this);"><br>
+
+        <label for="google">Select Bing</label>
+        <input type="checkbox" name="search-engine" value="Select Bing" id="Select Bing" onclick="selectBing();"><br>
+
         <label for="google">Google</label>
         <input type="checkbox" name="search-engine" value="google" id="google" checked><br>
+
+        <!-- // give choices to give for the checkboxes -->
+
+        
+
+
         <label for="bing">Bing</label>
         <input type="checkbox" name="search-engine" value="bing" id="bing"><br>
 
