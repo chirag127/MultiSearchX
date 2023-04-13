@@ -97,30 +97,27 @@
         } else if (searchEngine == "phind") {
           return "https://phind.com/search?q=" + searchTerm;
         } else if (searchEngine == "custom") {
-          return customSearchEngines[j].value.trim() + searchTerm;
+          return customSearchEngines[j].value + searchTerm;
         } else {
           return null;
         }
       }
 
-      function getSearchTerm(k, prependText, searchTerms, appendText) {
-                if (k == 0) {
-                  searchTerm = prependText + searchTerms[i].trim() + appendText;
-                } else {
-                  searchTerm =
-                    prependText + searchTerms[i].trim() + k + appendText;
-                }
-                return searchTerm;
-              }
-
+      function getSearchTerm(k, prependText, searchTerms, appendText, i) {
+        if (k == 0) {
+          searchTerm = prependText + searchTerms[i] + appendText;
+        } else {
+          searchTerm = prependText + searchTerms[i] + k + appendText;
+        }
+        return searchTerm;
+      }
 
       function search() {
         console.log("search");
 
         var searchTerms = document
           .getElementById("search-terms")
-          .value.trim()
-          .split("\n");
+          .value.split("\n");
         var appendText = document.getElementById("append-text").value;
         var prependText = document.getElementById("prepend-text").value;
         var searchEngines = document.querySelectorAll(
@@ -140,7 +137,7 @@
         for (var i = 0; i < searchTerms.length; i++) {
           total_search_engines = searchEngines.length + numCustomSearchEngines;
 
-          if (searchTerms[i].trim().length > 0) {
+          if (searchTerms[i].length > 0) {
             for (var j = 0; j < total_search_engines; j++) {
               if (j < searchEngines.length) {
                 var searchEngine = searchEngines[j].value;
@@ -148,13 +145,13 @@
                 var searchEngine = "custom";
               }
 
-
               for (var k = 0; k <= numberOfSearches; k++) {
                 searchTerm = getSearchTerm(
                   k,
                   prependText,
                   searchTerms,
-                  appendText
+                  appendText,
+                  i
                 );
 
                 searchUrl = getSearchUrl(searchEngine, searchTerm, j);
@@ -170,7 +167,6 @@
                   searchUrl
                 );
               }
-
             }
           }
         }
@@ -248,14 +244,14 @@
             numberOfSearches = 20;
           }
 
-          if (search_terms_box.value.trim().length == 0) {
+          if (search_terms_box.value.length == 0) {
             // does js have a random number generator ?
 
             var r = Math.random().toString(36).substring(7);
 
-            search_terms_box.value = r;
+            search_terms_box.value = r + " random ";
           } else {
-            search_terms = search_terms_box.value.trim().split("\n");
+            search_terms = search_terms_box.value.split("\n");
 
             numberOfSearches = Math.ceil(
               numberOfSearches / search_terms.length
