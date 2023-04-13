@@ -107,9 +107,9 @@
                         for (var k = 0; k <= numberOfSearches; k++) {
 
                             if (k == 0) {
-                                searchTerm = prependText + " " + searchTerms[i].trim() + " " + appendText;
+                                searchTerm = prependText + searchTerms[i].trim() + appendText;
                             } else {
-                                searchTerm = prependText + " " + searchTerms[i].trim() + " " + k + " " + appendText;
+                                searchTerm = prependText + searchTerms[i].trim() + k + appendText;
                             }
 
                             if (searchEngine == "google") {
