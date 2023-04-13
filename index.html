@@ -167,27 +167,29 @@
       }
 
       function generateCustomSearchEngineField(customSearchEnginesDiv, i) {
+        var inputField = generateCustomSearchEngineInputField(i);
+        var datalist = generateCustomSearchEngineDatalist(i);
+
+        customSearchEnginesDiv.appendChild(inputField);
+        customSearchEnginesDiv.appendChild(datalist);
+      }
+
+      function generateCustomSearchEngineInputField(i) {
         var inputField = document.createElement("input");
         inputField.type = "text";
         inputField.className = "custom-search-engine-field";
         inputField.name = "custom-search-engine-" + i;
         inputField.placeholder = "Custom search engine " + i;
         inputField.list = "custom-search-engines-to-suggest_" + i;
-        customSearchEnginesDiv.appendChild(inputField);
 
+        return inputField;
+      }
+
+      function generateCustomSearchEngineDatalist(i) {
         var datalist = document.createElement("datalist");
         datalist.id = "custom-search-engines-to-suggest_" + i;
 
-        customSearchEnginesDiv.appendChild(datalist);
-
-        for (var i = 0; i < customSearchEnginesToSuggest.length; i++) {
-          var option = document.createElement("option");
-          option.value = customSearchEnginesToSuggest[i];
-          option.text = customSearchEnginesToSuggest[i];
-          document
-            .getElementById("custom-search-engines-to-suggest_" + i)
-            .appendChild(option);
-        }
+        return datalist;
       }
 
       function toggle(source) {
