@@ -103,6 +103,17 @@
         }
       }
 
+      function getSearchTerm(k, prependText, searchTerms, appendText) {
+                if (k == 0) {
+                  searchTerm = prependText + searchTerms[i].trim() + appendText;
+                } else {
+                  searchTerm =
+                    prependText + searchTerms[i].trim() + k + appendText;
+                }
+                return searchTerm;
+              }
+
+
       function search() {
         console.log("search");
 
@@ -137,13 +148,14 @@
                 var searchEngine = "custom";
               }
 
+
               for (var k = 0; k <= numberOfSearches; k++) {
-                if (k == 0) {
-                  searchTerm = prependText + searchTerms[i].trim() + appendText;
-                } else {
-                  searchTerm =
-                    prependText + searchTerms[i].trim() + k + appendText;
-                }
+                searchTerm = getSearchTerm(
+                  k,
+                  prependText,
+                  searchTerms,
+                  appendText
+                );
 
                 searchUrl = getSearchUrl(searchEngine, searchTerm, j);
 
@@ -158,6 +170,7 @@
                   searchUrl
                 );
               }
+
             }
           }
         }
