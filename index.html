@@ -67,6 +67,42 @@
       }
     </style>
     <script>
+      function getSearchUrl(searchEngine, searchTerm, j) {
+        if (searchEngine == "google") {
+          if (document.getElementById("im-feeling-lucky").checked) {
+            return (
+              "https://www.google.com/search?q=" +
+              searchTerm +
+              "&btnI=I%27m+Feeling+Lucky"
+            );
+          } else {
+            return "https://www.google.com/search?q=" + searchTerm;
+          }
+        } else if (searchEngine == "bing") {
+          return "https://www.bing.com/search?q=" + searchTerm;
+        } else if (searchEngine == "neeva") {
+          return "https://neeva.com/search?q=" + searchTerm;
+        } else if (searchEngine == "brave") {
+          return (
+            "https://search.brave.com/search?q=" +
+            searchTerm +
+            "&FORM=ANNTH1&srchpg=no&ensearch=1"
+          );
+        } else if (searchEngine == "youchat") {
+          return (
+            "https://you.com/search?q=" +
+            searchTerm +
+            "&fromSearchBar=true&tbm=youchat"
+          );
+        } else if (searchEngine == "phind") {
+          return "https://phind.com/search?q=" + searchTerm;
+        } else if (searchEngine == "custom") {
+          return customSearchEngines[j].value.trim() + searchTerm;
+        } else {
+          return null;
+        }
+      }
+
       function search() {
         console.log("search");
 
@@ -109,37 +145,11 @@
                     prependText + searchTerms[i].trim() + k + appendText;
                 }
 
-                if (searchEngine == "google") {
-                  if (document.getElementById("im-feeling-lucky").checked) {
-                    searchUrl =
-                      "https://www.google.com/search?q=" +
-                      searchTerm +
-                      "&btnI=I%27m+Feeling+Lucky";
-                  } else {
-                    searchUrl = "https://www.google.com/search?q=" + searchTerm;
-                  }
-                } else if (searchEngine == "bing") {
-                  searchUrl = "https://www.bing.com/search?q=" + searchTerm;
-                } else if (searchEngine == "neeva") {
-                  searchUrl = "https://neeva.com/search?q=" + searchTerm;
-                } else if (searchEngine == "brave") {
-                  searchUrl =
-                    "https://search.brave.com/search?q=" +
-                    searchTerm +
-                    "&FORM=ANNTH1&srchpg=no&ensearch=1";
-                } else if (searchEngine == "youchat") {
-                  searchUrl =
-                    "https://you.com/search?q=" +
-                    searchTerm +
-                    "&fromSearchBar=true&tbm=youchat";
-                } else if (searchEngine == "phind") {
-                  searchUrl = "https://phind.com/search?q=" + searchTerm;
-                } else if (searchEngine == "custom") {
-                  searchUrl = customSearchEngines[j].value.trim() + searchTerm;
-                } else {
+                searchUrl = getSearchUrl(searchEngine, searchTerm, j);
+
+                if (searchUrl == null) {
                   continue;
                 }
-
                 setTimeout(
                   function (searchUrl) {
                     window.open(searchUrl, "_blank");
@@ -384,6 +394,11 @@
       <label for="number-of-searches">Number of searches (optional):</label>
       <input type="number" id="number-of-searches" value="0" /><br />
       <button type="button" onclick="search()">Search</button>
+      <button type="button" onclick="stop()">Stop</button>
+      <!-- <button type="button" onclick="clearSearches()">Clear</button> -->
+
+      <!-- reset button -->
+      <button type="reset">Reset</button>
     </form>
   </body>
 </html>
