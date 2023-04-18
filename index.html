@@ -7,290 +7,8 @@
     <meta name="author" content="Multi-Search Website" />
 
     <title>Multi-Search Website</title>
-    <style>
-      h1 {
-        font-size: 32px;
-        font-weight: bold;
-        text-align: center;
-        margin-bottom: 24px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: bold;
-      }
-
-      textarea,
-      input[type="text"],
-      input[type="number"] {
-        width: 100%;
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        /* margin-bottom: 16px; */
-        margin: auto;
-      }
-
-      button {
-        display: block;
-        margin: 16px auto;
-        padding: 8px 16px;
-        border-radius: 4px;
-        border: none;
-        background-color: #007bff;
-        color: #fff;
-        font-weight: bold;
-        cursor: pointer;
-      }
-
-      /* fix for bug in code */
-      button:hover {
-        background-color: #0069d9;
-        color: #fff;
-      }
-
-      .custom-search-engine-field {
-        width: 80%;
-        padding: 8px;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        margin-bottom: 16px;
-        text-align: center;
-        margin: auto;
-      }
-
-      form {
-        margin: auto;
-        width: 90%;
-        padding: 10px;
-      }
-    </style>
-    <script>
-      function getSearchUrl(searchEngine, searchTerm, j) {
-        if (searchEngine == "google") {
-          if (document.getElementById("im-feeling-lucky").checked) {
-            return (
-              "https://www.google.com/search?q=" +
-              searchTerm +
-              "&btnI=I%27m+Feeling+Lucky"
-            );
-          } else {
-            return "https://www.google.com/search?q=" + searchTerm;
-          }
-        } else if (searchEngine == "bing") {
-          return "https://www.bing.com/search?q=" + searchTerm;
-        } else if (searchEngine == "neeva") {
-          return "https://neeva.com/search?q=" + searchTerm;
-        } else if (searchEngine == "brave") {
-          return (
-            "https://search.brave.com/search?q=" +
-            searchTerm +
-            "&FORM=ANNTH1&srchpg=no&ensearch=1"
-          );
-        } else if (searchEngine == "youchat") {
-          return (
-            "https://you.com/search?q=" +
-            searchTerm +
-            "&fromSearchBar=true&tbm=youchat"
-          );
-        } else if (searchEngine == "phind") {
-          return "https://phind.com/search?q=" + searchTerm;
-        } else if (searchEngine == "custom") {
-          return customSearchEngines[j].value + searchTerm;
-        } else {
-          return null;
-        }
-      }
-
-      function getSearchTerm(k, prependText, searchTerms, appendText, i) {
-        if (k == 0) {
-          searchTerm = prependText + searchTerms[i] + appendText;
-        } else {
-          searchTerm = prependText + searchTerms[i] + k + appendText;
-        }
-        return searchTerm;
-      }
-
-      function search() {
-        console.log("search");
-
-        var searchTerms = document
-          .getElementById("search-terms")
-          .value.split("\n");
-        var appendText = document.getElementById("append-text").value;
-        var prependText = document.getElementById("prepend-text").value;
-        var searchEngines = document.querySelectorAll(
-          'input[name="search-engine"]:checked'
-        );
-        var customSearchEngines = document.querySelectorAll(
-          ".custom-search-engine-field"
-        );
-        var delay = parseInt(document.getElementById("delay").value);
-        var numberOfSearches = parseInt(
-          document.getElementById("number-of-searches").value
-        );
-        var numCustomSearchEngines = parseInt(
-          document.getElementById("num-custom-search-engines").value
-        );
-
-        for (var i = 0; i < searchTerms.length; i++) {
-          total_search_engines = searchEngines.length + numCustomSearchEngines;
-
-          if (searchTerms[i].length > 0) {
-            for (var j = 0; j < total_search_engines; j++) {
-              if (j < searchEngines.length) {
-                var searchEngine = searchEngines[j].value;
-              } else {
-                var searchEngine = "custom";
-              }
-
-              for (var k = 0; k <= numberOfSearches; k++) {
-                searchTerm = getSearchTerm(
-                  k,
-                  prependText,
-                  searchTerms,
-                  appendText,
-                  i
-                );
-
-                searchUrl = getSearchUrl(searchEngine, searchTerm, j);
-
-                if (searchUrl == null) {
-                  continue;
-                }
-                setTimeout(
-                  function (searchUrl) {
-                    window.open(searchUrl, "_blank");
-                  },
-                  delay,
-                  searchUrl
-                );
-              }
-            }
-          }
-        }
-      }
-      function generateCustomSearchEngineFields() {
-        var count = parseInt(
-          document.getElementById("num-custom-search-engines").value
-        );
-        var customSearchEnginesDiv = document.getElementById(
-          "custom-search-engines"
-        );
-        customSearchEnginesDiv.innerHTML = "";
-
-        for (var i = 1; i <= count; i++) {
-          generateCustomSearchEngineField(customSearchEnginesDiv, i);
-        }
-      }
-
-      function generateCustomSearchEngineField(customSearchEnginesDiv, i) {
-        var inputField = generateCustomSearchEngineInputField(i);
-        var datalist = generateCustomSearchEngineDatalist(i);
-
-        customSearchEnginesDiv.appendChild(inputField);
-        customSearchEnginesDiv.appendChild(datalist);
-      }
-
-      function generateCustomSearchEngineInputField(i) {
-        var inputField = document.createElement("input");
-        inputField.type = "text";
-        inputField.className = "custom-search-engine-field";
-        inputField.name = "custom-search-engine-" + i;
-        inputField.placeholder = "Custom search engine " + i;
-        inputField.list = "custom-search-engines-to-suggest_" + i;
-
-        return inputField;
-      }
-
-      function generateCustomSearchEngineDatalist(i) {
-        var datalist = document.createElement("datalist");
-        datalist.id = "custom-search-engines-to-suggest_" + i;
-
-        return datalist;
-      }
-
-      function toggle(source) {
-        checkboxes = document.getElementsByName("search-engine");
-        for (var i = 0, n = checkboxes.length; i < n; i++) {
-          checkboxes[i].checked = source.checked;
-        }
-      }
-
-      /*
-        make a function that select the bing and disable google and  search a random term 20 times if the search terms box is empty else if the
-        search terms box is not empty then search the terms in the search terms box 20 times collectively
-        like if the search terms box has 3 terms then search all the terms 20/3 times
-
-        */
-
-      function selectBing() {
-        if (document.getElementById("bing").checked) {
-          document.getElementById("bing").checked = false;
-        } else {
-          document.getElementById("bing").checked = true;
-          document.getElementById("bing").checked = true;
-
-          document.getElementById("bing").checked = true;
-
-          document.getElementById("google").checked = false;
-
-          search_terms_box = document.getElementById("search-terms");
-          numberOfSearches =
-            document.getElementById("number-of-searches").value;
-
-          if (numberOfSearches == 0) {
-            numberOfSearches = 20;
-          }
-
-          if (search_terms_box.value.length == 0) {
-            // does js have a random number generator ?
-
-            var r = Math.random().toString(36).substring(7);
-
-            search_terms_box.value = r + " random ";
-          } else {
-            search_terms = search_terms_box.value.split("\n");
-
-            numberOfSearches = Math.ceil(
-              numberOfSearches / search_terms.length
-            );
-          }
-
-          document.getElementById("number-of-searches").value =
-            numberOfSearches;
-
-          setTimeout(function () {
-            search();
-          }, 1000);
-        }
-      }
-
-      customSearchEnginesToSuggest = [
-        "https://youtube.com/search?q=",
-        "https://twitter.com/search?q=",
-        "https://duckduckgo.com/?q=",
-        "https://startpage.com/do/search?q=",
-        "https://search.brave.com/search?q=",
-        "https://www.ecosia.org/search?q=",
-        "https://www.qwant.com/?q=",
-        "https://www.yandex.com/search/?text=",
-        "https://www.naver.com/search.naver?query=",
-        "https://www.baidu.com/s?wd=",
-        "https://search.yahoo.com/search?p=",
-        "https://www.seznam.cz/?q=",
-        "https://www.ask.com/web?q=",
-        "https://www.aol.com/search/?q=",
-        "https://www.wolframalpha.com/input/?i=",
-        "https://www.google.com/search?q=",
-        "https://www.google.com/search?tbm=isch&q=",
-        "https://www.google.com/search?tbm=vid&q=",
-        "https://www.google.com/search?tbm=nws&q=",
-        "https://www.google.com/search?tbm=shop&q=",
-        "https://www.google.com/search?tbm=bks&q=",
-      ];
-    </script>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js"></script>
   </head>
 
   <body>
@@ -312,13 +30,10 @@
         >Enter text to prepend to each search term (optional):</label
       >
       <input type="text" id="prepend-text" />
-      <label for="im-feeling-lucky">I'm Feeling Lucky</label>
-      <input
-        type="checkbox"
-        name="im-feeling-lucky"
-        value="im-feeling-lucky"
-        id="im-feeling-lucky"
-      />
+      <label for="delimiter"
+        >Enter delimiter to separate search terms (optional):</label
+      >
+      <input type="text" id="delimiter" value="\n" />
 
       <label>Select search engines:</label><br />
 
@@ -344,46 +59,60 @@
       <input
         type="checkbox"
         name="search-engine"
-        value="google"
-        id="google"
+        data-bst="https://www.google.com/search?q="
+        data-ast=""
         checked
+      /><br />
+      <label for="google">Google I'm Feeling Lucky</label>
+      <input
+        type="checkbox"
+        name="search-engine"
+        data-bst="https://www.google.com/search?q="
+        data-ast="&btnI=I%27m+Feeling+Lucky"
       /><br />
 
       <label for="bing">Bing</label>
       <input
         type="checkbox"
         name="search-engine"
-        value="bing"
-        id="bing"
+        data-bst="https://www.bing.com/search?q="
+        data-ast=""
       /><br />
 
       <label for="neeva">Neeva AI</label>
       <input
         type="checkbox"
         name="search-engine"
-        value="neeva"
-        id="neeva"
+        data-bst="https://neeva.ai/search?q="
+        data-ast=""
       /><br />
       <label for="brave">Brave</label>
       <input
         type="checkbox"
         name="search-engine"
-        value="brave"
-        id="brave"
+        data-bst="https://search.brave.com/search?q="
+        data-ast=""
       /><br />
       <label for="youchat">YouChat</label>
       <input
         type="checkbox"
         name="search-engine"
-        value="youchat"
-        id="youchat"
+        data-bst="https://you.com/search?q="
+        data-ast="&fromSearchBar=true&tbm=youchat"
       /><br />
       <label for="phind">Phind</label>
       <input
         type="checkbox"
         name="search-engine"
-        value="phind"
-        id="phind"
+        data-bst="https://phind.com/search?q="
+        data-ast=""
+      /><br />
+      <label> Perplexity </label>
+      <input
+        type="checkbox"
+        name="search-engine"
+        data-bst="https://perplexity.ai/search?q="
+        data-ast=""
       /><br />
 
       <label for="custom">Custom</label>
@@ -402,6 +131,16 @@
       <input type="number" id="delay" value="0" /><br />
       <label for="number-of-searches">Number of searches (optional):</label>
       <input type="number" id="number-of-searches" value="0" /><br />
+
+      <label for="set-delimer">Set Delimiter as break character</label>
+      <input
+        type="checkbox"
+        name="set-delimer"
+        value="Set Delimiter as break character"
+        id="Set Delimiter as break character"
+        onclick="setDelimiter();"
+      /><br />
+
       <button type="button" onclick="search()">Search</button>
       <button type="button" onclick="stop()">Stop</button>
       <!-- <button type="button" onclick="clearSearches()">Clear</button> -->
