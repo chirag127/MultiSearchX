@@ -45,6 +45,14 @@
         id="select-all"
         onclick="toggle(this);"
       /><br />
+      <label for="select-ai-search"> Select AI Search </label>
+      <input
+        type="checkbox"
+        name="search-engine"
+        value="Select AI Search"
+        id="select-ai-search"
+        onclick="selectAiSearchEngines(this);"
+      /><br />
 
       <label for="select-bing">Select Bing</label>
       <input
@@ -77,39 +85,16 @@
       <input
         type="checkbox"
         name="search-engine"
+        class="ai-search-engine"
         id="bing"
         data-bst="https://www.bing.com/search?q="
         data-ast=""
-      /><br />
-
-      <label for="neeva">Neeva AI</label>
-      <input
-        type="checkbox"
-        name="search-engine"
-        id="neeva"
-        data-bst="https://neeva.ai/search?q="
-        data-ast=""
-      /><br />
-      <label for="brave">Brave</label>
-      <input
-        type="checkbox"
-        name="search-engine"
-        id="brave"
-        data-bst="https://search.brave.com/search?q="
-        data-ast=""
-      /><br />
-      <label for="youchat">YouChat</label>
-      <input
-        type="checkbox"
-        name="search-engine"
-        id="youchat"
-        data-bst="https://you.com/search?q="
-        data-ast="&fromSearchBar=true&tbm=youchat"
       /><br />
       <label for="phind">Phind</label>
       <input
         type="checkbox"
         name="search-engine"
+        class="ai-search-engine"
         id="phind"
         data-bst="https://phind.com/search?q="
         data-ast=""
@@ -118,10 +103,39 @@
       <input
         type="checkbox"
         name="search-engine"
+        class="ai-search-engine"
         id="perplexity"
         data-bst="https://perplexity.ai/search?q="
         data-ast=""
       /><br />
+      <label for="neeva">Neeva AI</label>
+      <input
+        type="checkbox"
+        name="search-engine"
+        class="ai-search-engine"
+        id="neeva"
+        data-bst="https://neeva.ai/search?q="
+        data-ast=""
+      /><br />
+      <label for="brave">Brave</label>
+      <input
+        type="checkbox"
+        name="search-engine"
+        class="ai-search-engine"
+        id="brave"
+        data-bst="https://search.brave.com/search?q="
+        data-ast=""
+      /><br />
+      <label for="youchat">YouChat</label>
+      <input
+        type="checkbox"
+        name="search-engine"
+        class="ai-search-engine"
+        id="youchat"
+        data-bst="https://you.com/search?q="
+        data-ast="&fromSearchBar=true&tbm=youchat"
+      /><br />
+
       <label for="duckduckgo">DuckDuckGo</label>
       <input
         type="checkbox"
@@ -130,7 +144,7 @@
         data-bst="https://duckduckgo.com/?q="
         data-ast=""
       /><br />
-      <label for="duckduckgo-lucky" >DuckDuckGo Lucky</label>
+      <label for="duckduckgo-lucky">DuckDuckGo Lucky</label>
       <input
         type="checkbox"
         name="search-engine"
@@ -138,9 +152,6 @@
         data-bst="https://duckduckgo.com/?q=\"
         data-ast=""
       /><br />
-
-      
-
 
       <label for="custom">Custom</label>
       <label for="num-custom-search-engines"

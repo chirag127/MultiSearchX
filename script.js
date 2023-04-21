@@ -138,8 +138,7 @@ function toggle(source) {
     checkboxes[i].checked = source.checked;
   }
 
-    document.getElementById("number-of-searches").value = 0;
-
+  document.getElementById("number-of-searches").value = 0;
 }
 
 /*
@@ -213,4 +212,13 @@ customSearchEnginesToSuggest = [
 
 function setDelimiter() {
   document.getElementById("delimiter").value = "-----";
+}
+
+function selectAiSearchEngines(source) {
+  ai_searche_engines_element =
+    document.getElementsByClassName("ai-search-engine");
+
+  for (var i = 0; i < ai_searche_engines_element.length; i++) {
+    ai_searche_engines_element[i].checked = source.checked;
+  }
 }
