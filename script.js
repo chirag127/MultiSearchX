@@ -164,7 +164,7 @@ function selectBing() {
 
     if (numberOfSearches == 0) {
       numberOfSearches = 40;
-      0;
+      
     }
 
     if (search_terms_box.value.length == 0) {
