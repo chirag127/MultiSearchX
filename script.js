@@ -163,7 +163,8 @@ function selectBing() {
     numberOfSearches = document.getElementById("number-of-searches").value;
 
     if (numberOfSearches == 0) {
-      numberOfSearches = 20;
+      numberOfSearches = 40;
+      0;
     }
 
     if (search_terms_box.value.length == 0) {
