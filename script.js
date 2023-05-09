@@ -20,9 +20,11 @@ function getSearchTerm(k, prependText, searchTerms, appendText, i) {
 }
 
 function search() {
-  console.log("search");
+  // console.log("search");
 
   var delimiter = document.getElementById("delimiter").value;
+
+  console.log("delimiter: " + delimiter);
 
   var searchTerms = document
     .getElementById("search-terms")
@@ -33,13 +35,13 @@ function search() {
     'input[name="search-engine"]:checked'
   );
 
-  console.log(searchEngines);
+  // console.log(searchEngines);
 
   var customSearchEngines = document.querySelectorAll(
     ".custom-search-engine-field"
   );
 
-  console.log(customSearchEngines);
+  // console.log(customSearchEngines);
 
   var delay = parseInt(document.getElementById("delay").value);
   var numberOfSearches = parseInt(
@@ -62,9 +64,9 @@ function search() {
           var ast = "";
         }
 
-        console.log(bst);
+        // console.log(bst);
 
-        console.log(ast);
+        // console.log(ast);
 
         for (var k = 0; k <= numberOfSearches; k++) {
           searchTerm = getSearchTerm(
@@ -77,7 +79,7 @@ function search() {
 
           searchUrl = getSearchUrl(bst, ast, searchTerm, j);
 
-          console.log(searchUrl);
+          // console.log(searchUrl);
 
           if (searchUrl == null) {
             continue;
@@ -164,7 +166,6 @@ function selectBing() {
 
     if (numberOfSearches == 0) {
       numberOfSearches = 40;
-      
     }
 
     if (search_terms_box.value.length == 0) {
