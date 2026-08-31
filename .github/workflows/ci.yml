@@ -53,7 +53,7 @@ jobs:
     #     directory: ./coverage/
 
     - name: Archive Artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: build-output
         path: dist/ # Assuming 'dist' is your build output directory
